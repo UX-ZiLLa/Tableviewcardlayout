@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Local Node runtime (from scripts/setup.sh or direct download)
+.node/
+
+# Local env (copy from .env.example)
+.env
+.env.local
+.env.*.local
+
+# Build
+dist/
+build/
+
+# Logs and cache
+*.log
+npm-debug.log*
+.pnpm-debug.log*
+.cache
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store

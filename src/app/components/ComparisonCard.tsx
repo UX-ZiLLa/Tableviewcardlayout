@@ -286,7 +286,7 @@ export function ComparisonCard({ pair, index, moveCard }: ComparisonCardProps) {
               </TableCell>
               <TableCell sx={{ verticalAlign: 'top', padding: '16px' }}>
                 <div className={`inline-flex px-3 py-1 rounded-full text-xs font-medium border ${getFulfillmentColor(item.fulfillmentType)}`}>
-                  {item.fulfillmentType}
+                  {item.fulfillmentType === 'Perm' ? 'Reinstatement' : item.fulfillmentType}
                 </div>
               </TableCell>
             </TableRow>
@@ -333,8 +333,14 @@ export function ComparisonCard({ pair, index, moveCard }: ComparisonCardProps) {
       </div>
 
       {/* Comparison Content */}
-      <div className="flex flex-col md:flex-row md:divide-x divide-gray-200">
+      <div className="flex flex-col md:flex-row">
         {renderItem(pair.itemA, 'left')}
+        {/* Visual separator between HD Supply and Home Depot Pro */}
+        <div
+          role="separator"
+          aria-label="Comparison between HD Supply Material and Home Depot Pro Material"
+          className="hidden md:block flex-shrink-0 w-3 self-stretch bg-gray-200 border-l-2 border-r-2 border-gray-400 min-h-[320px]"
+        />
         {renderItem(pair.itemB, 'right')}
       </div>
 
