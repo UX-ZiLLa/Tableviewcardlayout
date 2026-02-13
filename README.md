@@ -1,1 +1,11 @@
-# repo-template
+
+  # Table View Card Layout
+
+  This is a code bundle for Table View Card Layout. The original project is available at https://www.figma.com/design/LhbFVsNS9040rWmAIPlM8w/Table-View-Card-Layout.
+
+  ## Running the code
+
+  Run `npm i` to install the dependencies.
+
+  Run `npm run dev` to start the development server.
+  
