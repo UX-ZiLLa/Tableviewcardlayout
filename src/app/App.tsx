@@ -104,8 +104,7 @@ export default function App() {
         <div className="max-w-[1800px] mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-semibold text-gray-900 mb-2">Material Comparisons</h1>
-            <p className="text-gray-600">Compare HD Supply materials with Home Depot Pro perfect matches. Drag and drop to reorder.</p>
+            <h1 className="text-3xl font-semibold text-gray-900">Material Comparisons</h1>
           </div>
 
           {/* Comparison Cards - One per row */}
