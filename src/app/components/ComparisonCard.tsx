@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { GripVertical, TrendingUp, ChevronDown, ChevronUp } from 'lucide-react';
 import { 
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Table, 
   TableBody, 
   TableCell, 
@@ -307,80 +310,101 @@ export function ComparisonCard({ pair, index, moveCard }: ComparisonCardProps) {
   );
 
   return (
-    <div
+    <Accordion
+      defaultExpanded={false}
       ref={(node) => preview(drop(node))}
+      disableGutters
+      elevation={0}
       className={`
         bg-white rounded-lg border-2 transition-all
         ${isDragging ? 'opacity-40 scale-95' : 'opacity-100 scale-100'}
         ${isOver ? 'border-blue-400 shadow-lg' : 'border-gray-200 shadow-sm'}
       `}
+      sx={{
+        '&::before': { display: 'none' },
+      }}
     >
-      {/* Pending Approval Alert */}
-      {showPendingAlert && (
-        <div className="p-2">
-          <Alert severity="warning" onClose={() => setShowPendingAlert(false)}>
-            Pending Approval
-          </Alert>
-        </div>
-      )}
-      
       {/* Drag Handle Header */}
-      <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 border-b border-gray-200 rounded-t-lg">
-        <div ref={drag} className="cursor-grab active:cursor-grabbing hover:bg-gray-200 p-1 rounded transition-colors">
-          <GripVertical className="size-4 text-gray-400" />
+      <AccordionSummary
+        expandIcon={<ChevronDown className="size-4 text-gray-500" />}
+        className="px-4 py-3 bg-gray-50 border-b border-gray-200"
+        sx={{
+          minHeight: 'unset !important',
+          '& .MuiAccordionSummary-content': { margin: '0 !important' },
+        }}
+      >
+        <div className="flex items-center gap-3 w-full">
+          <div
+            ref={drag}
+            onClick={(e) => e.stopPropagation()}
+            className="cursor-grab active:cursor-grabbing hover:bg-gray-200 p-1 rounded transition-colors"
+          >
+            <GripVertical className="size-4 text-gray-400" />
+          </div>
+          <div className="text-xs font-semibold text-gray-800 truncate">{pair.groupName}</div>
         </div>
-        <div className="text-xs font-semibold text-gray-800 truncate">{pair.groupName}</div>
-      </div>
+      </AccordionSummary>
 
-      {/* Comparison Content */}
-      <div className="flex flex-col md:flex-row">
-        {renderItem(pair.itemA, 'left')}
-        {/* Visual separator between HD Supply and Home Depot Pro */}
-        <div
-          role="separator"
-          aria-label="Comparison between HD Supply Material and Home Depot Pro Material"
-          className="hidden md:block flex-shrink-0 w-3 self-stretch bg-gray-200 border-l-2 border-r-2 border-gray-400 min-h-[320px]"
-        />
-        {renderItem(pair.itemB, 'right')}
-      </div>
-
-      {/* Competitive Pricing Accordion */}
-      <div className="border-t border-gray-200">
-        <button
-          onClick={() => setIsCompetitiveOpen(!isCompetitiveOpen)}
-          className={`w-full flex items-center justify-center gap-2 px-4 py-3 text-xs font-medium transition-all ${
-            isCompetitiveOpen
-              ? 'bg-blue-100 text-blue-700 border-b border-blue-200'
-              : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
-          }`}
-        >
-          <TrendingUp className="size-3.5" />
-          Competitive Pricing
-          {isCompetitiveOpen ? (
-            <ChevronUp className="size-3.5 ml-auto" />
-          ) : (
-            <ChevronDown className="size-3.5 ml-auto" />
-          )}
-        </button>
-
-        {isCompetitiveOpen && pair.competitorPrices && (
-          <div className="px-4 py-4 bg-blue-50">
-            <div className="flex items-center gap-2 mb-3">
-              <TrendingUp className="size-3.5 text-blue-700" />
-              <h3 className="text-[10px] font-semibold text-blue-900 uppercase tracking-wider">Competitor Price Comparison</h3>
-            </div>
-            <div className="grid grid-cols-3 gap-3">
-              {pair.competitorPrices.map((comp) => (
-                <div key={comp.competitor} className="bg-white rounded-md p-3 border border-blue-200 shadow-sm">
-                  <div className="text-[11px] font-semibold text-gray-900 mb-1">{comp.competitor}</div>
-                  <div className="text-base font-bold text-gray-900">${comp.price.toFixed(2)}</div>
-                  <div className="text-[9px] text-gray-500 mt-0.5">Per unit</div>
-                </div>
-              ))}
-            </div>
+      <AccordionDetails className="p-0">
+        {/* Pending Approval Alert */}
+        {showPendingAlert && (
+          <div className="p-2">
+            <Alert severity="warning" onClose={() => setShowPendingAlert(false)}>
+              Pending Approval
+            </Alert>
           </div>
         )}
-      </div>
-    </div>
+
+        {/* Comparison Content */}
+        <div className="flex flex-col md:flex-row">
+          {renderItem(pair.itemA, 'left')}
+          {/* Visual separator between HD Supply and Home Depot Pro */}
+          <div
+            role="separator"
+            aria-label="Comparison between HD Supply Material and Home Depot Pro Material"
+            className="hidden md:block flex-shrink-0 w-3 self-stretch bg-gray-200 border-l-2 border-r-2 border-gray-400 min-h-[320px]"
+          />
+          {renderItem(pair.itemB, 'right')}
+        </div>
+
+        {/* Competitive Pricing Accordion */}
+        <div className="border-t border-gray-200">
+          <button
+            onClick={() => setIsCompetitiveOpen(!isCompetitiveOpen)}
+            className={`w-full flex items-center justify-center gap-2 px-4 py-3 text-xs font-medium transition-all ${
+              isCompetitiveOpen
+                ? 'bg-blue-100 text-blue-700 border-b border-blue-200'
+                : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+            }`}
+          >
+            <TrendingUp className="size-3.5" />
+            Competitive Pricing
+            {isCompetitiveOpen ? (
+              <ChevronUp className="size-3.5 ml-auto" />
+            ) : (
+              <ChevronDown className="size-3.5 ml-auto" />
+            )}
+          </button>
+
+          {isCompetitiveOpen && pair.competitorPrices && (
+            <div className="px-4 py-4 bg-blue-50">
+              <div className="flex items-center gap-2 mb-3">
+                <TrendingUp className="size-3.5 text-blue-700" />
+                <h3 className="text-[10px] font-semibold text-blue-900 uppercase tracking-wider">Competitor Price Comparison</h3>
+              </div>
+              <div className="grid grid-cols-3 gap-3">
+                {pair.competitorPrices.map((comp) => (
+                  <div key={comp.competitor} className="bg-white rounded-md p-3 border border-blue-200 shadow-sm">
+                    <div className="text-[11px] font-semibold text-gray-900 mb-1">{comp.competitor}</div>
+                    <div className="text-base font-bold text-gray-900">${comp.price.toFixed(2)}</div>
+                    <div className="text-[9px] text-gray-500 mt-0.5">Per unit</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </AccordionDetails>
+    </Accordion>
   );
 }
